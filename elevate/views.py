@@ -1,0 +1,58 @@
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .models import Listing
+from .serializers import ListingSerializer
+from rest_framework.exceptions import NotFound
+# Create your views here.
+class ElevateView(APIView):
+
+#path: /listings
+#Index route 
+#Method: get 
+    def get(self, request):
+        listings = Listing.objects.all()
+        serializer = ListingSerializer(listings, many=True)
+        print(serializer.data)
+        return Response(serializer.data)
+
+
+#create route 
+#Method: Post 
+    def post(self, request):
+        serializer = ListingSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(owner=request.user)
+        return Response(serializer.validated_data)
+
+
+#path: /listings/<int:pk>/
+class ElevateDetailView(APIView):
+
+    def get_Listing(self, pk):
+        try:
+            return Listing.objects.get(pk=pk)
+        except Listing.DoesNotExist as e:
+            print(e)
+            raise NotFound('Listing not found')
+    
+#show route 
+    def get(self, request, pk):
+        listing = self.get_Listing(pk)
+        serializer = ListingSerializer(listing)
+        return Response (serializer.data)
+
+    #UPDATE route 
+    def put(self, request, pk):
+        listing = self.get_Listing(pk)
+        serializer = ListingSerializer(listing, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response (serializer.validated_data)
+
+
+        #DELETE route 
+    def delete(self, request, pk):
+        listing = self.get_Listing(pk)
+        listing.delete()
+
+        return Response (status=204)
