@@ -6,4 +6,5 @@ from .views import SignupView
 urlpatterns = [
     path('sign-up/', SignupView.as_view()),
     path('sign-in/', TokenObtainPairView.as_view())
+
 ]

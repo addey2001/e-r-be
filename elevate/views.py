@@ -61,23 +61,25 @@ class ElevateDetailView(APIView):
         return Response (status=204)
 
 
-#path: /api/listings/:pk/favorite
+#path: /api/listings/:pk/favorites
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
+
 
 # /listings/<int:pk>/favorite
 class ListingFavoriteView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
-        listing = get_object_or_404(Listing, pk=pk)
-        if request.user in listing.favorites.all():
+        listing_to_favorite = get_object_or_404(Listing, pk=pk)
+        # Optional: Check if already favorited
+        if request.user in listing_to_favorite.favorites.all():
             return Response({'detail': 'Already in favorites'}, status=400)
-        listing.favorites.add(request.user)
+        listing_to_favorite.favorites.add(request.user)
         return Response({'detail': 'Added to favorites'})
 
     def delete(self, request, pk):
-        listing = get_object_or_404(Listing, pk=pk)
-        listing.favorites.remove(request.user)
+        listing_to_favorite = get_object_or_404(Listing, pk=pk)
+        listing_to_favorite.favorites.remove(request.user)
         return Response({'detail': 'Removed from favorites'})
     
