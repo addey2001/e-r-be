@@ -1,0 +1,74 @@
+# Elevate Listings API
+
+ELEVATE & RELOCATE
+
+---
+
+## Technologies Used
+
+- **Django** & **Django REST Framework**: For building the backend API, authentication, and serialization.
+- **PostgreSQL**: As the main database for storing users, listings, and favorites.
+- **Python**: The core programming language for backend logic.
+- **JWT Authentication**: For secure user login and protected endpoints.
+- **Docker** (optional): For containerized development and deployment.
+
+---
+
+## General Approach
+
+The Elevate Listings API was designed with RESTful best practices and modularity in mind. I began by outlining user stories and sketching wireframes to clarify the main flows and data relationships. The backend was scaffolded using Django and Django REST Framework, with a focus on clear separation between models, serializers, and views.
+
+I implemented robust authentication and permissions to ensure that only authorized users can create, update, or favorite listings. Serialization and validation were handled using DRF's serializers, and meaningful HTTP responses were returned for all API actions. The favorites feature was implemented as a ManyToMany relationship, with endpoints for adding and removing favorites.
+
+---
+
+## Installation Instructions
+
+1. **Clone the repository:**
+    ```sh
+    git clone
+  https://github.com/addey2001/e-r-be
+    ```
+
+2. **Create and activate a virtual environment:**
+    ```sh
+       pipenv install django-environ 
+    source venv/bin/activate
+    ```
+
+3. **Install dependencies:**
+    ```sh
+    pipenv shell
+    ```
+
+4. **Apply migrations:**
+    ```sh
+    python manage.py migrate
+    ```
+
+5. **Run the development server:**
+    ```sh
+    python manage.py runserver
+    ```
+
+---
+
+## User Stories & Wireframes
+
+- [User Stories & Wireframes (Figma)]https://trello.com/invite/b/68b02b21ee1b3493c29b144e/ATTI58b1f122e174884a5cac2ec81b8ef745933CF427/elevate-relocate
+
+
+---
+
+---
+
+## Unsolved Problems & Major Hurdles
+
+- **Duplicate Favorites:** Preventing users from favoriting the same listing multiple times required custom logic and careful testing.
+- **Authentication Edge Cases:** Handling expired or invalid tokens and ensuring smooth user experience was challenging.
+- **Deployment:** Dockerizing the app and configuring environment variables for production took extra time and troubleshooting.
+- **Testing:** Writing comprehensive tests for permissions and error handling was time-consuming but essential for reliability.
+
+---
+
+If you have any questions or want to contribute, please open an issue or submit a
