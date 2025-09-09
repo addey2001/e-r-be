@@ -70,21 +70,20 @@ from django.shortcuts import get_object_or_404
 class ListingFavoriteView(APIView):
     permission_classes = [IsAuthenticated]
     
-    def get(self, request, pk):
-        listing = get_object_or_404(Listing, pk=pk)
-        serializer = ListingSerializer(listing)
-        return Response(serializer.data)
-    
     def post(self, request, pk):
-        listing_to_favorite = get_object_or_404(Listing, pk=pk)
-        # Optional: Check if already favorited
-        if request.user in listing_to_favorite.favorites.all():
-            return Response({'detail': 'Already in favorites'}, status=400)
-        listing_to_favorite.favorites.add(request.user)
-        return Response({'detail': 'Added to favorites'})
+        try:
+            listing = Listing.objects.get(pk=pk)
+        except Listing.DoesNotExist:
+            raise NotFound("Listing not found")
+
+        listing.favorites.add(request.user)
+        return Response({"message": "Added to favorites"})
 
     def delete(self, request, pk):
-        listing_to_favorite = get_object_or_404(Listing, pk=pk)
-        listing_to_favorite.favorites.remove(request.user)
-        return Response({'detail': 'Removed from favorites'})
-    
+        try:
+            listing = Listing.objects.get(pk=pk)
+        except Listing.DoesNotExist:
+            raise NotFound("Listing not found")
+
+        listing.favorites.remove(request.user)
+        return Response({"message": "Removed from favorites"})
