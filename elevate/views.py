@@ -69,7 +69,12 @@ from django.shortcuts import get_object_or_404
 # /listings/<int:pk>/favorite
 class ListingFavoriteView(APIView):
     permission_classes = [IsAuthenticated]
-
+    
+    def get(self, request, pk):
+        listing = get_object_or_404(Listing, pk=pk)
+        serializer = ListingSerializer(listing)
+        return Response(serializer.data)
+    
     def post(self, request, pk):
         listing_to_favorite = get_object_or_404(Listing, pk=pk)
         # Optional: Check if already favorited
